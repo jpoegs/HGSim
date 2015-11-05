@@ -1,0 +1,10 @@
+class HungerGames {
+	
+	constructor() {
+		
+		
+	}
+	
+	
+	
+}
