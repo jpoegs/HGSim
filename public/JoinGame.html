@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Join Game</title>
+	<link rel="stylesheet" href="/style/style.css" >
+</head>
+
+<body>
+	<div class="centered">
+		<div class="centerBlock">
+			<input type="text" placeholder="Game Session ID" id="id" name="sessionid" class="inputSession" maxlength="8" style="text-align:center;"></input>
+			<input type="text" placeholder="Name" id="name" name="tributeName" class="inputSession" style="text-align:center;"></input>	
+			<input type="button" class="myButton" value="Join Game" onClick="join()" ></input>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		function join() {
+			sessionStorage.setItem('sessionID', document.getElementById("id").value);
+			sessionStorage.setItem('playerName', document.getElementById("name").value);
+			sessionStorage.setItem('host', false);
+			
+			var socket = io();
+			socket.emit('isValidGameSession', sessionStorage.getItem("sessionID"));
+			
+			socket.on('getValidation', function(valid) {
+				if(valid == true) {
+					window.location.replace("PlayGame.html");
+				}
+				else {
+					console.log('No game exists');
+				}
+			});
+		}
+	</script>
+	
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</html>

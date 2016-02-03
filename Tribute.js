@@ -1,36 +1,44 @@
-class Tribute {
-	
-	private var name;
-	private var killCount;
-	private var killNames;
-	
-	constructor(name) {
-		this.name = name;
-		killCount = 0;
-		killNames = {};
-	}
-	
-	public function getName() {
-		return name;
-	}
-	
-	public function setName(name) {
-		this.name = name;
-	}
-	
-	public function getKillCount() {
-		return name;
-	}
-	
-	public function setKillCount(killCount) {
-		this.killCount = killCount;
-	}
-	
-	public function getKillNames() {
-		return killNames;
-	}
-	
-	public function addKill(name) {
-		killNames.push(name);
-	}
+var name;
+var player = 0;
+var killCount;
+var killNames;
+
+function tribute(n) {
+	name = n;
+	killCount = 0;
+	killNames = {};
+	player++;
+}
+
+function getName() {
+	return name;
+}
+
+function setName(name) {
+	this.name = name;
+}
+
+function getPlayer() {
+	return player;
+}
+
+function setPlayer(player) {
+	this.player = player;
+}
+
+function getKillCount() {
+	return killCount;
+}
+
+function setKillCount(killCount) {
+	this.killCount = killCount;
+}
+
+function getKillNames() {
+	return killNames;
+}
+
+function addKill(name) {
+	killNames.push(name);
+	killCount++;
 }
