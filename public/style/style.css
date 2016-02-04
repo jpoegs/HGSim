@@ -19,7 +19,7 @@
 	left: 50%;
 }
 
-#player {
+.player {
 	max-width: 600px;
 	margin: 0 auto;
 	text-align: center;

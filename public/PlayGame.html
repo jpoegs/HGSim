@@ -27,14 +27,15 @@
 			playerName: sessionStorage.getItem("playerName"),
 			sessionID: sessionStorage.getItem("sessionID"),
 			host: sessionStorage.getItem("host"),
-			socketID: null
+			socketID: null,
+			createGame: sessionStorage.getItem("createGame")
 		};
 	
 		console.log(data);
-		if(data.host == "true") {
+		if(data.host == "true" && data.createGame == "true") {
 			socket.emit('create-game', data);
 			console.log('Attempting to create the game...');
-			
+			sessionStorage.setItem("createGame", false);
 		}
 		else {
 			socket.emit('join-game', data);
@@ -48,31 +49,30 @@
 			console.log(playerNames);
 			
 			for(var i = 0; i < playerNames.length; i++) {
-				if(document.getElementsByClassName(playerSockets[i]).length == 0 ) {
+				if(document.getElementById(playerSockets[i]) == null ) {
 					var div = document.createElement("div");
 					var text = document.createElement("p");
 					var node = document.createTextNode(playerNames[i]);
 					text.appendChild(node);
 					div.appendChild(text);
 					document.getElementById("playerList").appendChild(div);
-					div.id = "player";
-					div.className = playerSockets[i];
+					div.className = "player";
+					div.id = playerSockets[i];
 				}
 			}
 		});
 	
 		socket.on('new-player', function(name, sock) {
 			console.log(name + " has joined the game!");
-			
-			if(document.getElementsByClassName(sock).length == 0 ) {
+			if(document.getElementById(sock) == null ) {
 				var div = document.createElement("div");
 				var text = document.createElement("p");
 				var node = document.createTextNode(name);
 				text.appendChild(node);
 				div.appendChild(text);
 				document.getElementById("playerList").appendChild(div);
-				div.id = "player";
-				div.className = sock;
+				div.className = "player";
+				div.ids = sock;
 			}
 		});
 		
@@ -85,14 +85,8 @@
 		
 		socket.on('player-left', function(sock) {
 			var parent = document.getElementById("playerList");
-			var playerDiv = document.getElementByClassName(sock);
-			
+			var playerDiv = document.getElementById(sock);
 			parent.removeChild(playerDiv);
-			
-		});
-		
-		socket.on('leave', function() {
-			socket.emit('get-data', data);
 		});
 		
 	};

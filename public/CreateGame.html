@@ -32,7 +32,8 @@
 				playerName: document.getElementById("name").value,
 				sessionID: "",
 				host: true,
-				socket: null
+				socket: null,
+				createGame: true
 			};
 			
 			console.log(data);
@@ -40,8 +41,8 @@
 			sessionStorage.setItem("playerCount", data.playerCount);
 			sessionStorage.setItem("playerName", data.playerName);			;
 			sessionStorage.setItem("sessionID", data.sessionID);
-			sessionStorage.setItem("host", data.host)
-			
+			sessionStorage.setItem("host", data.host);
+			sessionStorage.setItem("createGame", data.createGame);			
 			console.log(data.playerName);
 			
 			window.location.replace("PlayGame.html");

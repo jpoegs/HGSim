@@ -234,7 +234,6 @@ function findPlayer(sess, socket) {
 				}
 			}
 		});
-	
 	});
 }
 
@@ -283,9 +282,8 @@ function joinGameSession(data) {
 							}
 							
 							console.log('The players in ' + data.sessionID + ' are ' + playerNames);
-							
-							io.to(data.sessionID).emit('get-all-players', playerNames, playerSockets);
-							io.to(data.sessionID).emit('store-session', data.sessionID, data.socket.id);
+							io.to(data.sessionID).emit('store-session', data.sessionID, data.socket.id)
+							io.to(data.sessionID).emit('get-all-players', playerNames, playerSockets);;
 							io.to(data.sessionID).emit('new-player', data.playerName, data.socket.id);
 							console.log(data.playerName + ' has joined ' + data.sessionID);
 						}
