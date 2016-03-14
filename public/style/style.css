@@ -1,4 +1,8 @@
-.intro-btn, #result, #gameSession {
+body{
+	background-color: lightgray;
+}
+
+.intro-btn, #result, #gameSessionBar {
 	text-align: center;
 	font-size: 40px;
 	background-color: darkblue;
@@ -10,6 +14,25 @@
 	border-style: solid;
 	border-color: black;
 }
+#yourGameSession {
+	top: 5%;
+	left: 50%;
+	margin: 0px;
+}
+
+#gameSession {
+	font-size: 20px;
+	color: darkgray;
+	text-align: center;
+	margin: 0px;
+}
+
+#gameSessionID {
+	font-size: 36px;
+	color: white;
+	text-align: center;
+	margin: 0px;
+}
 
 .session {
 	background-color: blue;
@@ -20,23 +43,41 @@
 }
 
 .player {
-	max-width: 600px;
-	margin: 0 auto;
+	border: 5px rgb(234, 28, 28) solid;
+
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	filter: alpha(opacity=75);
+	-moz-opacity: 0.75;
+	-khtml-opacity: 0.75;
+	opacity: 0.75;
+
+	-webkit-box-sizing: inherit;
+	-moz-box-sizing: inherit;
+	box-sizing: inherit;
+
+	background: rgb(213, 161, 13);
+
+	color: rgb(246, 238, 238);
+	font-size: 48px;
+	font-weight: 900;
+	font-family: 'MS Sans Serif', Geneva, sans-serif;
+	font-style: inherit;
+	text-decoration: inherit;
 	text-align: center;
-	font-size: 40px;
-	background-color: gray;
-	padding: 20px 10px 20px 10px;
-	color: black;
-	border-style: solid;
-	border-color: black;
+
+	line-height: 1.5em;
+
 }
 
-.playerList {
-	background-color: darkgray;
-	padding: 500px 400px 500px 400px;
-	position: fixed;
-	top: 50%;
-	left: 50%;
+#playerList {
+	margin-top: 50px;
+	margin-bottom: 10px;
+	margin-left: auto;
+    margin-right: auto;
+	width: 60%;
 }
 
 .centerBlock {
@@ -58,10 +99,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-body{
-	background: radial-gradient(circle, lightgray, gray, darkgray);
 }
 
 .inputSession, .inputPlayers {
@@ -111,4 +148,185 @@ footer {
     height:60px;
 	background-color: darkgray;
 	
+}
+/*
+form { 
+	background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; 
+}
+form input { 
+	border: 0; padding: 10px; width: 90%; margin-right: .5%; 
+}
+form button { 
+	width: 7%; background: rgb(130, 224, 255); border: none; padding: 10px; 
+}*/
+#messages { 
+	list-style-type: none; margin: 0; padding: 0; 
+}
+#messages li { 
+	padding: 5px 10px; 
+}
+#messages li:nth-child(odd) { 
+	background: #eee; 
+}
+
+.chatBoxFrame {
+	position: fixed;
+	padding: 10px;
+	margin: 10px;
+	right: 0px;
+	bottom: 0px;
+	width: 300px;
+	height: 450px;
+	border: 3px solid black;
+}
+
+.chatBoxTitleBar {
+	top: 0px;
+	width: 100%;
+	border: 1px solid black;
+	background: darkgray;
+}
+
+.chatBoxTitleText {
+	position: relative;
+	left: 20px;
+}
+
+.chatBoxTextArea {
+	margin-right: 5px;
+	margin-top: 5px;
+}
+
+.chatText {
+	width: 100%;
+	height: 100%;
+	resize: none;
+}
+
+.chatInput {
+	position: absolute;
+	width: 100%;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	bottom: 0px;
+}
+
+.chatInputText {
+	font-size: 14px;
+	background-color: white;
+	width: 75%;
+}
+
+.chatButton {
+	width: 15%;
+}
+
+.closeChatBox {
+	position: absolute;
+	right: 15px;
+	top: 20px;
+}
+
+.closeText {
+	font-size: 16px;
+	color: black;
+}
+
+.closeText:Hover {
+	color: red;
+}
+
+.closeText:Active {
+	color: green;
+}
+
+#timerFrame {
+	
+}
+
+#deadAliveList {
+	position: fixed;
+	width: 200px;
+	float: left;
+	margin-left: 25px;
+	margin-top: 50px;
+	margin-right: 25px;
+	border: 3px #000000 dotted;
+	background-color: gray;
+	-moz-box-shadow: 0px 0px 4px 6px #CCCCCC;
+	-webkit-box-shadow: 0px 0px 4px 6px #CCCCCC;
+	box-shadow: 0px 0px 4px 6px #CCCCCC;
+
+}
+
+#dead, #alive {
+	position: relative;
+	top: 0px;
+	margin: 15px;
+	border: 1px;
+	font-size: 24px;
+	font-color: darkgray;
+}
+
+#deadList, #aliveList, #inventoryListItems {
+	position: relative;
+	margin-top: 15px;
+}
+
+#deadTitle, #aliveTitle {
+	text-align: center;
+}
+
+.deadPlayer {
+	position: relative;
+	margin: 5px;
+	font-size: 16px;
+}
+
+.alivePlayer {
+	position: relative;
+	margin: 5px;
+	font-size: 16px;
+}
+
+.deadPlayerText {
+	color: red;
+	text-align: center;
+}
+
+.alivePlayerText {
+	color: green;
+	text-align: center;
+}
+
+#inventoryList {
+	position: fixed;
+	right: 0px;
+	float: right;
+	width: 200px;
+	margin-left: 25px;
+	margin-top: 50px;
+	margin-right: 25px;
+	border: 3px #000000 dotted;
+	background-color: gray;
+	-moz-box-shadow: 0px 0px 4px 6px #CCCCCC;
+	-webkit-box-shadow: 0px 0px 4px 6px #CCCCCC;
+	box-shadow: 0px 0px 4px 6px #CCCCCC;
+}
+
+#inventoryListTitle {
+	text-align: center;
+	font-size: 24px;
+	margin: 15px;
+}
+
+.item {
+	position: relative;
+	margin: 5px;
+	font-size: 16px;
+}
+
+.itemText {
+	color: black;
+	text-align: center;
 }

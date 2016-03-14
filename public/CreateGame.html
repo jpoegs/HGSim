@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
+
 <head>
 	<title>Create Game</title>
+	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style/style.css" >
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="jquery-1.12.1.js"></script>
 </head>
 
 <body>
-		
 	<div id = "tester">
 	</div>
 	<div class="centered">
 		<div class="centerBlock">
-		<div id = "result">
-		</div>
 			<input type="number" placeholder="Number of Players" id="count" name="playerCount" class="inputPlayers" maxlength="2" style="text-align:center;"></input>
 			<input type="text" placeholder="Name" id="name" name="tributeName" class="inputSession" style="text-align:center;"></input>	
-			<input type="button" class="myButton" id="createGameButton" value="Create Game" onclick="connect()" ></input>
+			<input type="button" class="myButton" id="createGameButton" value="Create Game" maxlength="20" onclick="connect()" ></input>
 		</div>
 	</div>
 </body>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script> 
 		function connect() {
-			console.log('Attempting to create a server...');
+			console.log('Attempting to create a game...');
 			
 			var data  = {
 				playerCount: document.getElementById("count").value,
 				playerName: document.getElementById("name").value,
 				sessionID: "",
-				host: true,
-				socket: null,
-				createGame: true
+				host: "true",
+				socketID: "null",
+				createGame: "true"
 			};
 			
 			console.log(data);
@@ -50,5 +49,5 @@
 		}
 		
 		
-		</script>
+</script>
 </html>

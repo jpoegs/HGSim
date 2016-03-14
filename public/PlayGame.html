@@ -1,43 +1,115 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 	<title>Play Game</title>
-	<link rel="stylesheet" href="/style/style.css" >
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style/style.css" >
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="jquery-1.12.1.js"></script>
 </head>
 
 <body> 
-	<div id="gameSession">
-		<p id="gameSession"></p>
+	<div id="gameSessionBar">
+		<div id="yourGameSession">	
+			<p id="gameSession">Game Session</p>
+		</div>
+		<p id="gameSessionID"></p>
 	</div>
+	<div id="deadAliveList">
+		<div id="alive">
+			<p id="aliveTitle">Alive Players</p>
+			<div id="aliveList">
+				<div class="alivePlayer">
+					<p class="alivePlayerText">Enter Alive Player Here</p>
+				</div>
+			</div>
+		</div>
+		<div id="dead">
+			<p id="deadTitle">Dead Players</p>
+			<div id="deadList">
+				<div class="alivePlayer">
+					<p class="deadPlayerText">Enter Dead Player Here</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="inventoryList">
+		<div id="inventoryListTitle">
+			<p>Inventory</p>
+		</div>
+		<div id="inventoryItems">
+			<div class="item">
+				<p class="itemText">Water</P>
+			</div>
+		</div>
+	</div>
+	
 	<div id="playerList">
 	</div>
-
+	
+	<div id="chatFrame" class="chatBoxFrame">
+		<div class="chatBoxTitleBar">
+			<div class="chatBoxTitle">
+				<p class="chatBoxTitleText">Chat Box</p>
+			</div>
+			<div class="closeChatBox">
+				<input type="button" value="_" onclick="toggleChatBox()" class="closeText"></p>
+			</div>
+		</div>
+		<div class="chatBoxTextArea">
+			<textarea rows="23" cols="45" readonly="readonly" id="chat" class="chatText"></textarea>
+		</div>
+		<div class="chatInput">
+			<form id="messageForm">
+				<input type="text" placeholder="Chat here..." size="28" id="message" class="chatInputText"></input>
+				<script>
+					$("#messageForm").keypress(function(e) {
+						if (e.which == 13) {
+							sendMessage();
+							return false;
+						}
+					});
+				</script>
+				<input type="button" value="Send" onclick="sendMessage()" class="chatButton"></input>
+			</form>
+		</div>
+	</div>
+	
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script type="text/javascript">
-	var players = {};
 
+<script type="text/javascript">
+	var socket = io();
+	
 	window.onload = function() {
-		var socket = io();
+		//socket = io();
+		
+		if(typeof sessionStorage.getItem("socketID") != "undefined" && typeof sessionStorage.getItem("sessionID") != "undefined" && sessionStorage.getItem("socketID") != null) {
+			var s = sessionStorage.getItem("socketID");
+			var id = sessionStorage.getItem("sessionID");
+			socket.emit('remove-player', id, s);
+			console.log("Trying to remove " + s + " ...");
+		}
 		var data = {
 			playerCount: sessionStorage.getItem("playerCount"),
 			playerName: sessionStorage.getItem("playerName"),
 			sessionID: sessionStorage.getItem("sessionID"),
 			host: sessionStorage.getItem("host"),
-			socketID: null,
+			socketID: "null",
 			createGame: sessionStorage.getItem("createGame")
 		};
 	
 		console.log(data);
 		if(data.host == "true" && data.createGame == "true") {
+			console.log( data.createGame );
 			socket.emit('create-game', data);
 			console.log('Attempting to create the game...');
-			sessionStorage.setItem("createGame", false);
+			sessionStorage.setItem("createGame", "false");
 		}
 		else {
+			console.log("Attempting to join the game...");
 			socket.emit('join-game', data);
 		}
 	
@@ -45,26 +117,25 @@
 			console.log("The game has been successfully created!");
 		});
 	
-		socket.on('get-all-players', function(playerNames, playerSockets) {
-			console.log(playerNames);
-			
-			for(var i = 0; i < playerNames.length; i++) {
-				if(document.getElementById(playerSockets[i]) == null ) {
+		socket.on('get-all-players', function(name, socketID) {
+			console.log(name);
+			for(var i = 0; i < name.length; i++) {
+				if(document.getElementById(socketID[i]) == null ) {
 					var div = document.createElement("div");
 					var text = document.createElement("p");
-					var node = document.createTextNode(playerNames[i]);
+					var node = document.createTextNode(name[i]);
 					text.appendChild(node);
 					div.appendChild(text);
 					document.getElementById("playerList").appendChild(div);
 					div.className = "player";
-					div.id = playerSockets[i];
+					div.id = socketID[i];
 				}
 			}
 		});
 	
-		socket.on('new-player', function(name, sock) {
-			console.log(name + " has joined the game!");
-			if(document.getElementById(sock) == null ) {
+		socket.on('new-player', function(name, socket) {
+			console.log(name + " has joined the game! with id: " + socket);
+			if(document.getElementById(socket) == null ) {
 				var div = document.createElement("div");
 				var text = document.createElement("p");
 				var node = document.createTextNode(name);
@@ -72,24 +143,68 @@
 				div.appendChild(text);
 				document.getElementById("playerList").appendChild(div);
 				div.className = "player";
-				div.ids = sock;
+				div.id = socket;
 			}
 		});
 		
 		socket.on('store-session', function(sess, sock) {
 			sessionStorage.setItem("sessionID", sess);
 			sessionStorage.setItem("socketID", sock);
-			console.log("Store sessions: " + sess);
-			document.getElementById("gameSession").innerHTML = sessionStorage.getItem("sessionID");
+			console.log("Storing session: " + sess + " and sockID: " + sock);
+			document.getElementById("gameSessionID").innerHTML = sessionStorage.getItem("sessionID");	
+		});
+		
+		socket.on('receive-message', function(name, message) {
+			document.getElementById("chat").value += name + ": " + message + "\n";
+			console.log(name +  ": " + message);
+		});
+		
+		socket.on('server-message', function(message) {
+			document.getElementById("chat").value += message;
 		});
 		
 		socket.on('player-left', function(sock) {
 			var parent = document.getElementById("playerList");
 			var playerDiv = document.getElementById(sock);
 			parent.removeChild(playerDiv);
+			console.log("Player " + sock + " left the game.");
 		});
 		
+		socket.on('initialize-game', function() {
+			var div = document.getElementById("playerList");
+			div.parentNode.removeChild(div);
+			var timer = document.createElement("div");
+			timer.id = "timerFrame";
+		});
+		
+		socket.on('question', function(question, a1, a2, a3, a4) {
+			
+		});
+		
+		//socket.emit('startGame');
 	};
+	
+	function toggleChatBox() {
+		if(document.getElementById("chat").style.display == "none") {
+			document.getElementById("chat").style.display = "block";
+			document.getElementById("chatFrame").style.height = "450px";
+		}
+		else {
+			document.getElementById("chat").style.display = "none";
+			document.getElementById("chatFrame").style.height = "100px";
+		}
+	}
+	
+	function sendMessage() {
+		if(document.getElementById("message").value != "") {
+			socket.emit('send-message', document.getElementById("message").value, sessionStorage.getItem("sessionID"), sessionStorage.getItem("playerName"));
+			document.getElementById("message").value = "";
+		}
+	}
+	
+	function startGame() {
+		
+	}
 	
 </script>
 </html>

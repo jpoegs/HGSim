@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 	<title>Join Game</title>
+	<meta charset="UTF-8">
 	<link rel="stylesheet" href="/style/style.css" >
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="jquery-1.12.1.js"></script>
 </head>
 
 <body>
@@ -20,12 +23,12 @@
 		function join() {
 			sessionStorage.setItem('sessionID', document.getElementById("id").value);
 			sessionStorage.setItem('playerName', document.getElementById("name").value);
-			sessionStorage.setItem('host', false);
+			sessionStorage.setItem('host', "false");
 			
 			var socket = io();
 			socket.emit('isValidGameSession', sessionStorage.getItem("sessionID"));
 			
-			socket.on('getValidation', function(valid) {
+			socket.on('get-validation', function(valid) {
 				if(valid == true) {
 					window.location.replace("PlayGame.html");
 				}
@@ -37,6 +40,4 @@
 	</script>
 	
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 </html>
